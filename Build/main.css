@@ -1,0 +1,19 @@
+
+
+.topright{
+    position: absolute;
+    right: 1vw;
+    top: 0vh;
+    margin: 0;
+    color: #15ff00;
+}
+
+.username{
+    color: #ff0000;
+    margin-bottom: 0;
+}
+
+.text{
+    color: #000000;
+    margin-top: 0;
+}
