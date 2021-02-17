@@ -24,12 +24,17 @@ firebase.auth().onAuthStateChanged((user) => {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
     username = user.displayName;
+    if (username != null){
     document.getElementById("usernameShow").innerHTML = username;
+    }else{
+        document.getElementById("usernameShow").innerHTML = "now you refresh the page";
+    }
     document.getElementById("usernameShow").style.color = "#" + randomColor;
     // ...
   } else {
-    // User is signed out
-    // ...
+    username = null;
+    document.getElementById("usernameShow").innerHTML = username;
+    document.getElementById("usernameShow").style.color = "#" + randomColor;
   }
 });
 
