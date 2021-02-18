@@ -23,7 +23,6 @@ function signUpWithEmailPassword() {
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
     var username = document.getElementById("username").value;
-    //var username = document.getElementById("username").value;
     // [START auth_signup_password]
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {

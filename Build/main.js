@@ -19,6 +19,8 @@ console.log("#"+randomColor);
 let font = "Ariel";
 let room = null;
 
+
+
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     // User is signed in, see docs for a list of available properties
@@ -50,6 +52,12 @@ function setRoom(){
     if (!(document.getElementById("roomCode").value.includes("<"))){
         room = document.getElementById("roomCode").value;
     }
+    if (document.body.children.length > 17){
+    for (i=17; i<document.body.children.length; i++){
+        document.body.children[i].remove();
+    }}
+    Cr()
+
 }
 function submit(){
     if (username != null && document.getElementById("inputText").value.length > 2 && !(document.getElementById("inputText").value.includes("<"))) {
@@ -57,9 +65,12 @@ function submit(){
         document.getElementById("inputText").value = "";
     }
 }
+function Cr(){
+ref.off("child_added");
 
-ref.on("child_added",function(snapshot){
-    //if (snapshot.val().room == room){
+
+    ref.on("child_added",function(snapshot){
+        if (snapshot.val().room == room){
     let newMessage = document.getElementById("message").content.cloneNode(true);
     newMessage.children[0].style.color = "#" + snapshot.val().color;
     newMessage.children[0].style.marginBottom = 0;
@@ -67,8 +78,13 @@ ref.on("child_added",function(snapshot){
     newMessage.children[0].innerHTML = snapshot.val().username;
     newMessage.children[1].innerHTML = snapshot.val().text;
     newMessage.children[1].style.fontFamily = snapshot.val().font;
-    document.body.insertBefore(newMessage,document.body.children[17]);//}
+    document.body.insertBefore(newMessage,document.body.children[17]);}
 });
+
+
+
+}
+
 
 var wage = document.getElementById("inputText");
 wage.addEventListener("keydown", function (e) {
