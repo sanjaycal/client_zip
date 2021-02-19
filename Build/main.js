@@ -74,6 +74,9 @@ function setRoom(){
   var elms = document.querySelectorAll("[id='h5']");
   for(var i = 0; i < elms.length; i++) {
 elms[i].remove();}
+var elms = document.querySelectorAll("[id='img']");
+  for(var i = 0; i < elms.length; i++) {
+elms[i].remove();}
     Cr()
 
 }
