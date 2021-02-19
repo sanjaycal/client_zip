@@ -15,9 +15,8 @@ let db = firebase.database();
 let username = null;
 let ref = db.ref("test");
 let contrast_ratio = 1.05/1.5 - 0.05;
-
 let imageTypes = ["jpg","png"]
-
+let pfp = "";
 let r = Math.floor(Math.random()*256*contrast_ratio).toString(16)
 if (r.length ==1){
     r = "0"+r   
@@ -35,18 +34,23 @@ let font = "Ariel";
 let room = null;
 
 
-
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
     username = user.displayName;
+    let userdb = db.ref(user.uid);
+    userdb.on("child_added",function(snapshot){
+        pfp = snapshot.val().pfp;
+        console.log(snapshot.val().pfp)})
+    console.log(pfp)
     if (username != null){
     document.getElementById("usernameShow").innerHTML = username;
     }else{
         document.getElementById("usernameShow").innerHTML = "now you refresh the page";
     }
     document.getElementById("usernameShow").style.color = "#" + randomColor;
+    document.getElementById("pfpShow").src = pfp;
     // ...
   } else {
     username = null;
@@ -77,13 +81,19 @@ elms[i].remove();}
 var elms = document.querySelectorAll("[id='img']");
   for(var i = 0; i < elms.length; i++) {
 elms[i].remove();}
+var elms = document.querySelectorAll("[id='Profilepc']");
+  for(var i = 0; i < elms.length; i++) {
+elms[i].remove();}
+var elms = document.querySelectorAll("[id='mbr']");
+  for(var i = 0; i < elms.length; i++) {
+elms[i].remove();}
     Cr()
 
 }
 function submit(){
     text = document.getElementById("inputText").value;
     if (username != null && document.getElementById("inputText").value.length > 2 && !(document.getElementById("inputText").value.includes("<"))) {
-        ref.push({username:username, text:text, color:randomColor, font:font, room:room});
+        ref.push({username:username, text:text, color:randomColor, font:font, room:room, pfp:pfp});
         document.getElementById("inputText").value = "";
     }
 }
@@ -95,18 +105,19 @@ ref.on("child_added",function(snapshot){
     if (snapshot.val().room == room){
         
         let newMessage = document.getElementById("message").content.cloneNode(true);
-        newMessage.children[0].style.color = "#" + snapshot.val().color;
-        newMessage.children[0].style.marginBottom = 0;
-        newMessage.children[1].style.marginTop = 0;
-        newMessage.children[0].innerHTML = snapshot.val().username;
+        newMessage.children[0].src = snapshot.val().pfp;
+        newMessage.children[1].style.color = "#" + snapshot.val().color;
+        newMessage.children[1].style.marginBottom = 0;
+        newMessage.children[2].style.marginTop = 0;
+        newMessage.children[1].innerHTML = snapshot.val().username;
         if (imageTypes.includes((snapshot.val().text).slice(-3))){
-            newMessage.children[2].src = snapshot.val().text;
+            newMessage.children[4].src = snapshot.val().text;
         }else{
-            newMessage.children[1].innerHTML = snapshot.val().text;
+            newMessage.children[3].innerHTML = snapshot.val().text;
         }
         console.log(imageTypes.includes((snapshot.val().text).slice(-3)));
-        newMessage.children[1].style.fontFamily = snapshot.val().font;
-        document.body.insertBefore(newMessage,document.body.children[16]);
+        newMessage.children[2].style.fontFamily = snapshot.val().font;
+        document.body.insertBefore(newMessage,document.body.children[22]);
     }
 });
 

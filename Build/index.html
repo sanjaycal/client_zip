@@ -10,15 +10,18 @@
  </head>
  <body>
    <template id = "message">
-     <h1 id="h1" style="color: #ff0000; margin-bottom: 0;"></h1>
-     <h3 id="h5" style="color: #000000; margin-bottom: 0; font-family: Arial"></h3>
+     <img id="Profilepc" height = 40px src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/>
+     <label id="h1" style="color: #ff0000; margin-bottom: 0; margin-top: 0; font-size: 40px;"></label><br id="mbr">
+     <label id="h5" style="color: #000000; margin-bottom: 0; font-family: Arial; font-size: 20px;"></label>
      <img id="img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/>
    </template>
    <h1 class="topright" id=usernameShow></h1> 
+   <img class="topright" id=pfpShow> 
    
    <label for="username">&nbsp   username:   &nbsp<input type="text" placeholder="Username" id="username"></label>
-   <label for="email">email:<input type="text" placeholder="Email" id="email"></label>
-   <label for="password">password:<input type="text" placeholder="Password" id="password"></label>
+   <label for="email">email:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" placeholder="Email" id="email"></label><br id="br4">
+   <label for="password">password: &nbsp&nbsp&nbsp<input type="text" placeholder="Password" id="password"></label>
+   <label for="profilePicture">profilePictureURL:<input type="text" placeholder="PFP URL" id="profilePicture"></label><br id="br5">
    <button id="signUp" onmousedown="signUpWithEmailPassword();" >Sign Up</button>
    <button id="signIn" onmousedown="signInWithEmailPassword();" >Sign In</button><br id="br1">
    <label>&nbsp&nbsp&nbsp&nbsp&nbsp    font:    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="font" placeholder="Font"></label>
@@ -26,7 +29,7 @@
    <label>Room Code:<input type="text" id="roomCode" placeholder="RoomCode"></label>
    <button id="SetRoom" onmousedown="setRoom();" >Set Room</button><br id="br3">
    <label>&nbsp&nbsp&nbspMessage:&nbsp&nbsp<input type="text" id="inputText" placeholder="message"></label>
-   <button id="sendMessage" onmousedown="submit();" >Send Message</button>
+   <button id="sendMessage" onmousedown="submit();" >Send Message</button><br id="br6">
 
    <!-- The core Firebase JS SDK is always required and must be listed first -->
    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
