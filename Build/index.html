@@ -2,8 +2,11 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  <title>Client.zip</title>
  <head>
+   <meta name="viewport" content="width=device-width">
    <link rel="stylesheet" href="main.css">
+   <meta name="Description" content="The main chat.">
  </head>
  <body>
    <template id = "message">
@@ -11,28 +14,27 @@
      <h3 id="h5" style="color: #000000; margin-bottom: 0; font-family: Arial"></h3>
    </template>
    <h1 class="topright" id=usernameShow></h1> 
-   <input type="text" placeholder="Username" id="username">
-   <input type="text" placeholder="Email" id="email">
-   <input type="text" placeholder="Password" id="password">
-   <button id="button" onmousedown="signUpWithEmailPassword();">Sign Up</button>
-   <button id="button" onmousedown="signInWithEmailPassword();">Sign In</button><br>
-   <input type="text" id="font">
-   <button id="button" onmousedown="setFont();">Set Font</button><br>
-   <input type="text" id="roomCode">
-   <button id="button" onmousedown="setRoom();">Set Room</button><br>
-   <input type="text" id="inputText">
-   <button id="button" onmousedown="submit();">Send Message</button>
+   
+   <label for="username">&nbsp   username:   &nbsp<input type="text" placeholder="Username" id="username"></label>
+   <label for="email">email:<input type="text" placeholder="Email" id="email"></label>
+   <label for="password">password:<input type="text" placeholder="Password" id="password"></label>
+   <button id="signUp" onmousedown="signUpWithEmailPassword();" >Sign Up</button>
+   <button id="signIn" onmousedown="signInWithEmailPassword();" >Sign In</button><br id="br1">
+   <label>&nbsp&nbsp&nbsp&nbsp&nbsp    font:    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="font" placeholder="Font"></label>
+   <button id="setFont" onmousedown="setFont();" >Set Font</button><br id="br1">
+   <label>Room Code:<input type="text" id="roomCode" placeholder="RoomCode"></label>
+   <button id="SetRoom" onmousedown="setRoom();" >Set Room</button><br id="br3">
+   <label>&nbsp&nbsp&nbspMessage:&nbsp&nbsp<input type="text" id="inputText" placeholder="message"></label>
+   <button id="sendMessage" onmousedown="submit();" >Send Message</button>
 
    <!-- The core Firebase JS SDK is always required and must be listed first -->
    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
 
    <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-database.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-analytics.js"></script>
 
    <!-- Add Firebase products that you want to use -->
    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
-   <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-firestore.js"></script>
 
    <script src="main.js"></script>
    <script src="email.js"></script>

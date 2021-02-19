@@ -14,8 +14,22 @@ firebase.initializeApp(firebaseConfig);
 let db = firebase.database();
 let username = null;
 let ref = db.ref("test");
-let randomColor = Math.floor(Math.random()*16777215).toString(16);
-console.log("#"+randomColor);
+let contrast_ratio = 1.05/1.5 - 0.05
+
+
+let r = Math.floor(Math.random()*256*contrast_ratio).toString(16)
+if (r.length ==1){
+    r = "0"+r   
+}
+let g = Math.floor(Math.random()*256*contrast_ratio).toString(16)
+if (g.length ==1){
+    g = "0"+g
+}
+let b = Math.floor(Math.random()*256*contrast_ratio).toString(16)
+if (b.length ==1){
+    b = "0"+b
+}
+let randomColor = r.concat(g.concat(b));
 let font = "Ariel";
 let room = null;
 
@@ -52,10 +66,13 @@ function setRoom(){
     if (!(document.getElementById("roomCode").value.includes("<"))){
         room = document.getElementById("roomCode").value;
     }
-    if (document.body.children.length > 17){
-    for (i=17; i<document.body.children.length; i++){
-        document.body.children[i].remove();
-    }}
+    console.log(document.body.children)
+    var elms = document.querySelectorAll("[id='h1']");
+    for(var i = 0; i < elms.length; i++) {
+  elms[i].remove();}
+  var elms = document.querySelectorAll("[id='h5']");
+  for(var i = 0; i < elms.length; i++) {
+elms[i].remove();}
     Cr()
 
 }
@@ -78,7 +95,7 @@ ref.off("child_added");
     newMessage.children[0].innerHTML = snapshot.val().username;
     newMessage.children[1].innerHTML = snapshot.val().text;
     newMessage.children[1].style.fontFamily = snapshot.val().font;
-    document.body.insertBefore(newMessage,document.body.children[17]);}
+    document.body.insertBefore(newMessage,document.body.children[16]);}
 });
 
 
