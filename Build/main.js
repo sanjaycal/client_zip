@@ -14,8 +14,9 @@ firebase.initializeApp(firebaseConfig);
 let db = firebase.database();
 let username = null;
 let ref = db.ref("test");
-let contrast_ratio = 1.05/1.5 - 0.05
+let contrast_ratio = 1.05/1.5 - 0.05;
 
+let imageTypes = ["jpg","png"]
 
 let r = Math.floor(Math.random()*256*contrast_ratio).toString(16)
 if (r.length ==1){
@@ -77,8 +78,9 @@ elms[i].remove();}
 
 }
 function submit(){
+    text = document.getElementById("inputText").value;
     if (username != null && document.getElementById("inputText").value.length > 2 && !(document.getElementById("inputText").value.includes("<"))) {
-        ref.push({username:username, text:document.getElementById("inputText").value, color:randomColor, font:font, room:room});
+        ref.push({username:username, text:text, color:randomColor, font:font, room:room});
         document.getElementById("inputText").value = "";
     }
 }
@@ -86,16 +88,23 @@ function Cr(){
 ref.off("child_added");
 
 
-    ref.on("child_added",function(snapshot){
-        if (snapshot.val().room == room){
-    let newMessage = document.getElementById("message").content.cloneNode(true);
-    newMessage.children[0].style.color = "#" + snapshot.val().color;
-    newMessage.children[0].style.marginBottom = 0;
-    newMessage.children[1].style.marginTop = 0;
-    newMessage.children[0].innerHTML = snapshot.val().username;
-    newMessage.children[1].innerHTML = snapshot.val().text;
-    newMessage.children[1].style.fontFamily = snapshot.val().font;
-    document.body.insertBefore(newMessage,document.body.children[16]);}
+ref.on("child_added",function(snapshot){
+    if (snapshot.val().room == room){
+        
+        let newMessage = document.getElementById("message").content.cloneNode(true);
+        newMessage.children[0].style.color = "#" + snapshot.val().color;
+        newMessage.children[0].style.marginBottom = 0;
+        newMessage.children[1].style.marginTop = 0;
+        newMessage.children[0].innerHTML = snapshot.val().username;
+        if (imageTypes.includes((snapshot.val().text).slice(-3))){
+            newMessage.children[2].src = snapshot.val().text;
+        }else{
+            newMessage.children[1].innerHTML = snapshot.val().text;
+        }
+        console.log(imageTypes.includes((snapshot.val().text).slice(-3)));
+        newMessage.children[1].style.fontFamily = snapshot.val().font;
+        document.body.insertBefore(newMessage,document.body.children[16]);
+    }
 });
 
 
