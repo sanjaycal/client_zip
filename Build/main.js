@@ -17,6 +17,9 @@ let ref = db.ref("test");
 let contrast_ratio = 1.05/1.5 - 0.05;
 let imageTypes = ["jpg","png"]
 let pfp = "";
+var storageRef = firebase.storage().ref();
+
+
 
 let r = Math.floor(Math.random()*256*contrast_ratio).toString(16)
 if (r.length ==1){
@@ -106,9 +109,28 @@ function setRoom(){
 
 function submit(){
     text = document.getElementById("inputText").value;
+    file = document.getElementById("Fileinput").files[0]
+    console.log(file.name)
+    console.log(text)
     if (username != null && document.getElementById("inputText").value.length > 2 && !(document.getElementById("inputText").value.includes("<"))) {
-        ref.push({text:text, color:randomColor, font:font, room:room, uid:uid});
+        ref.push({text:text, color:randomColor, font:font, room:room, uid:uid, isImage:false});
         document.getElementById("inputText").value = "";
+    }else if(file.name!="" && imageTypes.includes((file.name).slice(-3))){
+        urli = "";
+        for (i = 0; i < 64; i++) {
+            urli+= Math.floor(Math.random()*64).toString(32);
+        }
+        console.log(urli)
+        newFile = storageRef.child(urli)
+        newFile.put(file).then((snapshot) => {
+            console.log(file.name);
+            newFile.getDownloadURL().then((url) => {
+                console.log(url)
+                ref.push({text:url, color:randomColor, font:font, room:room, uid:uid, isImage:true});
+                document.getElementById("inputText").value = "";
+              })
+          });
+        
     }
 }
 
@@ -133,14 +155,16 @@ function Cr(){
                 newMessage.children[1].style.color = "#" + snapshot.val().color;
                 newMessage.children[1].style.marginBottom = 0;
                 newMessage.children[2].style.marginTop = 0;
-                if (imageTypes.includes((snapshot.val().text).slice(-3))){
+                if(snapshot.val().isImage){
+                    newMessage.children[4].src = snapshot.val().text;
+                }else if (imageTypes.includes((snapshot.val().text).slice(-3))){
                     newMessage.children[4].src = snapshot.val().text;
                 }else{
                     newMessage.children[3].innerHTML = snapshot.val().text;
                 }
                 newMessage.children[2].style.fontFamily = snapshot.val().font;
                 senderdb.off("child_added");
-                document.body.insertBefore(newMessage,document.body.children[22]);
+                document.body.insertBefore(newMessage,document.body.children[24]);
             });
         }
     });

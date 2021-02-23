@@ -13,13 +13,12 @@
      <img id="Profilepc" height = 40px src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/>
      <label id="h1" style="color: #ff0000; margin-bottom: 0; margin-top: 0; font-size: 40px;"></label><br id="mbr">
      <label id="h5" style="color: #000000; margin-bottom: 0; font-family: Arial; font-size: 20px;"></label>
-     <img id="img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/><br id="mbr">
+     <img id="img" height=200px src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/><br id="mbr">
    </template>
    <div class="toprighttext"><label class="usernameShow" id=usernameShow></label> 
    <img id=pfpShow height=40px width=40px></div> 
-   
    <label for="username">&nbsp   username:   &nbsp<input type="text" placeholder="Username" id="username"></label>
-   <label for="email">email:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" placeholder="Email" id="email"></label><br id="br4">
+   <label for="email">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspemail:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" placeholder="Email" id="email"></label><br id="br4">
    <label for="password">password: &nbsp&nbsp&nbsp<input type="text" placeholder="Password" id="password"></label>
    <label for="profilePicture">profilePictureURL:<input type="text" placeholder="PFP URL" id="profilePicture"></label><br id="br5">
    <button id="signUp" onmousedown="signUpWithEmailPassword();" >Sign Up</button>
@@ -29,6 +28,7 @@
    <button id="setFont" onmousedown="setFont();" >Set Font</button><br id="br1">
    <label>Room Code:<input type="text" id="roomCode" placeholder="RoomCode"></label>
    <button id="SetRoom" onmousedown="setRoom();" >Set Room</button><br id="br3">
+   <input type="file" id="Fileinput" multiple><br>
    <label>&nbsp&nbsp&nbspMessage:&nbsp&nbsp<input type="text" id="inputText" placeholder="message"></label>
    <button id="sendMessage" onmousedown="submit();" >Send Message</button><br id="br6">
 
@@ -40,6 +40,7 @@
 
    <!-- Add Firebase products that you want to use -->
    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-auth.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-storage.js"></script>
 
    <script src="main.js"></script>
    <script src="email.js"></script>
