@@ -15,7 +15,7 @@ let db = firebase.database();
 let username = null;
 let ref = db.ref("test");
 let contrast_ratio = 1.05/1.5 - 0.05;
-let imageTypes = ["jpg","png"]
+let imageTypes = ["jpg","png","gif","svg"]
 let pfp = "";
 var storageRef = firebase.storage().ref();
 
@@ -109,9 +109,8 @@ function setRoom(){
 
 function submit(){
     text = document.getElementById("inputText").value;
-    file = document.getElementById("Fileinput").files[0]
-    console.log(file.name)
-    console.log(text)
+    if (document.getElementById("Fileinput").files[0]!= undefined){
+    file = document.getElementById("Fileinput").files[0]}
     if (username != null && document.getElementById("inputText").value.length > 2 && !(document.getElementById("inputText").value.includes("<"))) {
         ref.push({text:text, color:randomColor, font:font, room:room, uid:uid, isImage:false});
         document.getElementById("inputText").value = "";
