@@ -17,19 +17,24 @@ let ref = db.ref("test");
 let contrast_ratio = 1.05/1.5 - 0.05;
 let imageTypes = ["jpg","png"]
 let pfp = "";
+
 let r = Math.floor(Math.random()*256*contrast_ratio).toString(16)
 if (r.length ==1){
     r = "0"+r   
 }
+
 let g = Math.floor(Math.random()*256*contrast_ratio).toString(16)
 if (g.length ==1){
     g = "0"+g
 }
+
 let b = Math.floor(Math.random()*256*contrast_ratio).toString(16)
 if (b.length ==1){
     b = "0"+b
 }
+
 let randomColor = r.concat(g.concat(b));
+
 let font = "Ariel";
 let room = null;
 
@@ -76,19 +81,24 @@ function setRoom(){
     console.log(document.body.children)
     var elms = document.querySelectorAll("[id='h1']");
     for(var i = 0; i < elms.length; i++) {
-  elms[i].remove();}
-  var elms = document.querySelectorAll("[id='h5']");
-  for(var i = 0; i < elms.length; i++) {
-elms[i].remove();}
-var elms = document.querySelectorAll("[id='img']");
-  for(var i = 0; i < elms.length; i++) {
-elms[i].remove();}
-var elms = document.querySelectorAll("[id='Profilepc']");
-  for(var i = 0; i < elms.length; i++) {
-elms[i].remove();}
-var elms = document.querySelectorAll("[id='mbr']");
-  for(var i = 0; i < elms.length; i++) {
-elms[i].remove();}
+        elms[i].remove();}
+
+    var elms = document.querySelectorAll("[id='h5']");
+    for(var i = 0; i < elms.length; i++) {
+        elms[i].remove();}
+
+    var elms = document.querySelectorAll("[id='img']");
+    for(var i = 0; i < elms.length; i++) {
+        elms[i].remove();}
+
+    var elms = document.querySelectorAll("[id='Profilepc']");
+    for(var i = 0; i < elms.length; i++) {
+        elms[i].remove();}
+
+    var elms = document.querySelectorAll("[id='mbr']");
+    for(var i = 0; i < elms.length; i++) {
+        elms[i].remove();}
+
     Cr()
 
 }
@@ -104,39 +114,36 @@ function submit(){
 
 
 function Cr(){
-ref.off("child_added");
-
-
-ref.on("child_added",function(snapshot){
-    if (snapshot.val().room == room){
-        
-        let senderdb = db.ref(snapshot.val().uid);
-        data = senderdb.toJSON();
-        fetch(data+".json")
-  .then((response) => {
-    return response.json()
-  })
-  .then((data) => {
-    // Work with JSON data here
-    console.log(data[Object.keys(data)[0]].username)
-    let newMessage = document.getElementById("message").content.cloneNode(true);
-    newMessage.children[0].src = data[Object.keys(data)[0]].pfp;
-
-        newMessage.children[1].innerHTML = data[Object.keys(data)[0]].username;
-        newMessage.children[1].style.color = "#" + snapshot.val().color;
-        newMessage.children[1].style.marginBottom = 0;
-        newMessage.children[2].style.marginTop = 0;
-        if (imageTypes.includes((snapshot.val().text).slice(-3))){
-            newMessage.children[4].src = snapshot.val().text;
-        }else{
-            newMessage.children[3].innerHTML = snapshot.val().text;
+    ref.off("child_added");
+    ref.on("child_added",function(snapshot){
+        if (snapshot.val().room == room){
+            
+            let senderdb = db.ref(snapshot.val().uid);
+            data = senderdb.toJSON();
+            fetch(data+".json")
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                // Work with JSON data here
+                console.log(data[Object.keys(data)[0]].username)
+                let newMessage = document.getElementById("message").content.cloneNode(true);
+                newMessage.children[0].src = data[Object.keys(data)[0]].pfp;
+                newMessage.children[1].innerHTML = data[Object.keys(data)[0]].username;
+                newMessage.children[1].style.color = "#" + snapshot.val().color;
+                newMessage.children[1].style.marginBottom = 0;
+                newMessage.children[2].style.marginTop = 0;
+                if (imageTypes.includes((snapshot.val().text).slice(-3))){
+                    newMessage.children[4].src = snapshot.val().text;
+                }else{
+                    newMessage.children[3].innerHTML = snapshot.val().text;
+                }
+                newMessage.children[2].style.fontFamily = snapshot.val().font;
+                senderdb.off("child_added");
+                document.body.insertBefore(newMessage,document.body.children[22]);
+            });
         }
-        newMessage.children[2].style.fontFamily = snapshot.val().font;
-        senderdb.off("child_added");
-        document.body.insertBefore(newMessage,document.body.children[22]);
-  });
-    }
-});
+    });
 
 
 
