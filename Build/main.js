@@ -39,7 +39,10 @@ if (b.length ==1){
 let randomColor = r.concat(g.concat(b));
 
 let font = "Ariel";
-let room = "main";
+let room = null;
+
+document.getElementById("roomCode").value="main";
+setRoom();
 
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -112,15 +115,15 @@ function setRoom(){
 function submit(){
     text = document.getElementById("inputText").value;
     var d = new Date();
-  var n = d.getTime();
+    var n = d.getTime();
     if (document.getElementById("Fileinput").files[0]!= undefined){
     file = document.getElementById("Fileinput").files[0]}
     if (username != null && document.getElementById("inputText").value.length > 2 && !(document.getElementById("inputText").value.includes("<"))) {
-        ref.push({text:text, color:randomColor, font:font, room:room, uid:uid, isImage:false,time:n});
+        ref.push({text:text, font:font, room:room, uid:uid, isImage:false,time:n});
         document.getElementById("inputText").value = "";
     }else if(file.name!="" && imageTypes.includes((file.name).slice(-3))){
         urli = "";
-        for (i = 0; i < 64; i++) {
+        for (i = 0; i < 128; i++) {
             urli+= Math.floor(Math.random()*64).toString(32);
         }
         console.log(urli)
@@ -129,7 +132,7 @@ function submit(){
             console.log(file.name);
             newFile.getDownloadURL().then((url) => {
                 console.log(url)
-                ref.push({text:url, color:randomColor, font:font, room:room, uid:uid, isImage:true,time:n});
+                ref.push({text:url, font:font, room:room, uid:uid, isImage:true,time:n});
                 document.getElementById("inputText").value = "";
               })
           });
@@ -155,7 +158,6 @@ function Cr(){
                 let newMessage = document.getElementById("message").content.cloneNode(true);
                 newMessage.children[0].src = data[Object.keys(data)[0]].pfp;
                 newMessage.children[1].innerHTML = data[Object.keys(data)[0]].username;
-                newMessage.children[1].style.color = "#" + snapshot.val().color;
                 newMessage.children[1].style.marginBottom = 0;
                 newMessage.children[2].style.marginTop = 0;
                 if(snapshot.val().isImage){
@@ -167,7 +169,7 @@ function Cr(){
                 }
                 newMessage.children[2].style.fontFamily = snapshot.val().font;
                 senderdb.off("child_added");
-                document.body.insertBefore(newMessage,document.body.children[24]);
+                document.body.insertBefore(newMessage,document.body.children[11]);
             });
         }
     });
@@ -200,3 +202,6 @@ function updateUsernamePfp(){
     }
 }
 
+function addImage(){
+    document.getElementById("Fileinput").click();
+}

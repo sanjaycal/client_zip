@@ -10,20 +10,19 @@
  </head>
  <body>
    <template id = "message">
-     <img id="Profilepc" height = 40px src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/>
-     <label id="h1" style="color: #ff0000; margin-bottom: 0; margin-top: 0; font-size: 40px;"></label><br id="mbr">
-     <label id="h5" style="color: #000000; margin-bottom: 0; font-family: Arial; font-size: 20px;"></label>
-     <img id="img" max-height=200px src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/><br id="mbr">
+     <img id="Profilepc" class="pfp" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/>
+     <label id="h1" class="usernameText"></label><br id="mbr">
+     <label id="h5" class="messageText"></label>
+     <img id="img" class="imgText" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/><br id="mbr">
    </template>
    <div class="toprighttext"><label class="usernameShow" id=usernameShow></label> 
-   <img id=pfpShow height=40px width=40px></div> 
-   <label>&nbsp&nbsp&nbsp&nbsp&nbsp    font:    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="font" placeholder="Font"></label>
-   <button id="setFont" onmousedown="setFont();" >Set Font</button><br id="br1">
-   <label>Room Code:<input type="text" id="roomCode" placeholder="RoomCode"></label>
+   <img id=pfpShow class="pfp"></div> 
+   <label><input type="text" id="roomCode" placeholder="RoomCode" class="messageBox"></label>
    <button id="SetRoom" onmousedown="setRoom();" >Set Room</button><br id="br3">
-   <input type="file" id="Fileinput" multiple><br>
-   <label>&nbsp&nbsp&nbspMessage:&nbsp&nbsp<input type="text" id="inputText" placeholder="message"></label>
-   <button id="sendMessage" onmousedown="submit();" >Send Message</button><br id="br6">
+   <input type="file" id="Fileinput" style="display:none" multiple>
+   <img id="addImage" class="iconAddImage" src="https://firebasestorage.googleapis.com/v0/b/fir-test-f2419.appspot.com/o/plus.svg?alt=media&token=0fd929e0-9fc2-4ece-80a4-d0c101ab4c0b" onclick="addImage();"></img>
+   <label><input type="text" id="inputText" placeholder="message" class="messageBox"></label>
+   <img class=iconSendMessage id="sendMessage" onmousedown="submit();" src="https://firebasestorage.googleapis.com/v0/b/fir-test-f2419.appspot.com/o/send.png?alt=media&token=4e9fedfb-2816-4c09-8ba6-1e0fbc8d0bb3"></img><br id="br6">
 
    <!-- The core Firebase JS SDK is always required and must be listed first -->
    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>

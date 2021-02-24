@@ -31,3 +31,59 @@
     color: #000000;
     margin-top: 0;
 }
+
+.pfp{
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center center;
+    height: 40px;
+    width: 40px;
+    vertical-align: middle;
+}
+
+.messageText{
+    color: #dcddde;
+    margin-bottom: 0;
+    font-family: Arial;
+    font-size: 20px;
+    margin-left: 45px;
+}
+
+
+.iconAddImage{
+    width: 30px;
+    vertical-align: middle;
+    background-color: #AFAAA3;
+    filter: invert(100%);
+    border-radius: 50%;
+}
+
+.iconSendMessage{
+    width: 30px;
+    vertical-align: middle;
+}
+
+.messageBox{
+    height: 30px;
+    width: 300px;
+    background-color: #40444b;
+    color: #FFFFFF;
+}
+
+body {
+    background-color: #36393F;
+}
+
+.usernameText{
+    color: #ff0000;
+    margin-bottom: 0;
+    margin-top: 0;
+    font-size: 40px;
+
+}
+
+.imgText{
+    max-height: 200px;
+    border-color: #000000;
+    border-width: 3px;
+}
