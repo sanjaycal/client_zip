@@ -46,7 +46,6 @@ firebase.auth().onAuthStateChanged((user) => {
     })
     if (location.href != "https://clientdotzip.web.app/main.html"){
     location.href = "https://clientdotzip.web.app/main.html";}
-    console.log(location.href)
     
     // ...
   } else {
@@ -78,7 +77,6 @@ function setRoom(){
             }
         }
     }
-    console.log(rm.substring(5).localeCompare(username))
     var elms = document.querySelectorAll("[id='h1']");
     for(var i = 0; i < elms.length; i++) {
         elms[i].remove();}
@@ -169,11 +167,11 @@ function Cr(){
 
 var wage = document.getElementById("inputText");
 if (wage!= null){
-wage.addEventListener("keydown", function (e) {
-    if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
-        validate(e);
-    }
-});
+    wage.addEventListener("keydown", function (e) {
+        if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
+            validate(e);
+        }
+    });
 }
 function validate(e) {
     submit();
