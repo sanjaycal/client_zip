@@ -39,7 +39,7 @@ if (b.length ==1){
 let randomColor = r.concat(g.concat(b));
 
 let font = "Ariel";
-let room = null;
+let room = "main";
 
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -60,6 +60,8 @@ firebase.auth().onAuthStateChanged((user) => {
             document.getElementById("usernameShow").style.color = "#" + randomColor;
             document.getElementById("pfpShow").src = pfp;
     })
+    if (window.location.href == "index.html"){
+    window.location.href = "main.html";}
     
     // ...
   } else {
@@ -109,10 +111,12 @@ function setRoom(){
 
 function submit(){
     text = document.getElementById("inputText").value;
+    var d = new Date();
+  var n = d.getTime();
     if (document.getElementById("Fileinput").files[0]!= undefined){
     file = document.getElementById("Fileinput").files[0]}
     if (username != null && document.getElementById("inputText").value.length > 2 && !(document.getElementById("inputText").value.includes("<"))) {
-        ref.push({text:text, color:randomColor, font:font, room:room, uid:uid, isImage:false});
+        ref.push({text:text, color:randomColor, font:font, room:room, uid:uid, isImage:false,time:n});
         document.getElementById("inputText").value = "";
     }else if(file.name!="" && imageTypes.includes((file.name).slice(-3))){
         urli = "";
@@ -125,7 +129,7 @@ function submit(){
             console.log(file.name);
             newFile.getDownloadURL().then((url) => {
                 console.log(url)
-                ref.push({text:url, color:randomColor, font:font, room:room, uid:uid, isImage:true});
+                ref.push({text:url, color:randomColor, font:font, room:room, uid:uid, isImage:true,time:n});
                 document.getElementById("inputText").value = "";
               })
           });
@@ -136,7 +140,7 @@ function submit(){
 
 function Cr(){
     ref.off("child_added");
-    ref.on("child_added",function(snapshot){
+    ref.orderByChild("time").on("child_added",function(snapshot){
         if (snapshot.val().room == room){
             
             let senderdb = db.ref(snapshot.val().uid);

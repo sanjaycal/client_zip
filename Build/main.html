@@ -17,13 +17,13 @@
    </template>
    <div class="toprighttext"><label class="usernameShow" id=usernameShow></label> 
    <img id=pfpShow height=40px width=40px></div> 
-   <label for="username">&nbsp   username:   &nbsp<input type="text" placeholder="Username" id="username"></label>
-   <label for="email">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspemail:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" placeholder="Email" id="email"></label><br id="br4">
-   <label for="password">password: &nbsp&nbsp&nbsp<input type="text" placeholder="Password" id="password"></label>
-   <label for="profilePicture">profilePictureURL:<input type="text" placeholder="PFP URL" id="profilePicture"></label><br id="br5">
-   <button id="signUp" onmousedown="signUpWithEmailPassword();" >Sign Up</button>
-   <button id="signIn" onmousedown="signInWithEmailPassword();" >Sign In</button>
-   <button id="updateUPFP" onmousedown="updateUsernamePfp();" >Update</button><br id="br1">
+   <label>&nbsp&nbsp&nbsp&nbsp&nbsp    font:    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="font" placeholder="Font"></label>
+   <button id="setFont" onmousedown="setFont();" >Set Font</button><br id="br1">
+   <label>Room Code:<input type="text" id="roomCode" placeholder="RoomCode"></label>
+   <button id="SetRoom" onmousedown="setRoom();" >Set Room</button><br id="br3">
+   <input type="file" id="Fileinput" multiple><br>
+   <label>&nbsp&nbsp&nbspMessage:&nbsp&nbsp<input type="text" id="inputText" placeholder="message"></label>
+   <button id="sendMessage" onmousedown="submit();" >Send Message</button><br id="br6">
 
    <!-- The core Firebase JS SDK is always required and must be listed first -->
    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
