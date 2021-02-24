@@ -21,28 +21,11 @@ var storageRef = firebase.storage().ref();
 
 
 
-let r = Math.floor(Math.random()*256*contrast_ratio).toString(16)
-if (r.length ==1){
-    r = "0"+r   
-}
-
-let g = Math.floor(Math.random()*256*contrast_ratio).toString(16)
-if (g.length ==1){
-    g = "0"+g
-}
-
-let b = Math.floor(Math.random()*256*contrast_ratio).toString(16)
-if (b.length ==1){
-    b = "0"+b
-}
-
-let randomColor = r.concat(g.concat(b));
-
 let font = "Ariel";
 let room = null;
-
+if (document.getElementById("roomCode")!=null){
 document.getElementById("roomCode").value="main";
-setRoom();
+setRoom();}
 
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -54,13 +37,11 @@ firebase.auth().onAuthStateChanged((user) => {
     userdb.on("child_added",function(snapshot){
         pfp = snapshot.val().pfp;
         username = snapshot.val().username;
-        console.log(snapshot.val().username)
         if (username != null){
             document.getElementById("usernameShow").innerHTML = username;
             }else{
                 document.getElementById("usernameShow").innerHTML = "now you refresh the page";
             }
-            document.getElementById("usernameShow").style.color = "#" + randomColor;
             document.getElementById("pfpShow").src = pfp;
     })
     if (window.location.href == "index.html"){
@@ -83,10 +64,21 @@ function setFont(){
     }
 }
 function setRoom(){
-    if (!(document.getElementById("roomCode").value.includes("<"))){
+    rm = document.getElementById("roomCode").value
+    if (!(rm.includes("<"))){
         room = document.getElementById("roomCode").value;
+        ref = db.ref("test")
+        if(rm.substring(0,4)=="user"){
+            if(rm.substring(5).localeCompare(username)==1){
+                ref=db.ref(rm.substring(5)+username)
+                room = "main"
+            }else if(rm.substring(5).localeCompare(username)==-1){
+                ref=db.ref(username+rm.substring(5))
+                room = "main"
+            }
+        }
     }
-    console.log(document.body.children)
+    console.log(rm.substring(5).localeCompare(username))
     var elms = document.querySelectorAll("[id='h1']");
     for(var i = 0; i < elms.length; i++) {
         elms[i].remove();}
@@ -121,23 +113,20 @@ function submit(){
     if (username != null && document.getElementById("inputText").value.length > 2 && !(document.getElementById("inputText").value.includes("<"))) {
         ref.push({text:text, font:font, room:room, uid:uid, isImage:false,time:n});
         document.getElementById("inputText").value = "";
-    }else if(file.name!="" && imageTypes.includes((file.name).slice(-3))){
+    }if(document.getElementById("Fileinput").files[0]!= undefined){if(file.name!="" && imageTypes.includes((file.name).slice(-3))){
         urli = "";
         for (i = 0; i < 128; i++) {
             urli+= Math.floor(Math.random()*64).toString(32);
         }
-        console.log(urli)
         newFile = storageRef.child(urli)
         newFile.put(file).then((snapshot) => {
-            console.log(file.name);
             newFile.getDownloadURL().then((url) => {
-                console.log(url)
                 ref.push({text:url, font:font, room:room, uid:uid, isImage:true,time:n});
                 document.getElementById("inputText").value = "";
               })
           });
         
-    }
+    }}
 }
 
 
@@ -154,7 +143,6 @@ function Cr(){
             })
             .then((data) => {
                 // Work with JSON data here
-                console.log(data[Object.keys(data)[0]].username)
                 let newMessage = document.getElementById("message").content.cloneNode(true);
                 newMessage.children[0].src = data[Object.keys(data)[0]].pfp;
                 newMessage.children[1].innerHTML = data[Object.keys(data)[0]].username;
@@ -180,12 +168,13 @@ function Cr(){
 
 
 var wage = document.getElementById("inputText");
+if (wage!= null){
 wage.addEventListener("keydown", function (e) {
     if (e.keyCode === 13) {  //checks whether the pressed key is "Enter"
         validate(e);
     }
 });
-
+}
 function validate(e) {
     submit();
 }
@@ -195,10 +184,8 @@ function updateUsernamePfp(){
     username = document.getElementById("username").value
     if (document.getElementById("profilePicture")!=""){
         userdb.push({pfp:document.getElementById("profilePicture").value , username:username});
-        console.log(document.getElementById("username").value);}
-    else{
+    }else{
         userdb.push({pfp:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/1200px-The_Earth_seen_from_Apollo_17.jpg",username:document.getElementById("username")});
-        console.log(document.getElementById("profilePicture").value);
     }
 }
 
