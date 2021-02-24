@@ -44,14 +44,14 @@ firebase.auth().onAuthStateChanged((user) => {
             }
             document.getElementById("pfpShow").src = pfp;
     })
-    if (window.location.href == "index.html"){
-    window.location.href = "main.html";}
+    if (location.href != "https://clientdotzip.web.app/main.html"){
+    location.href = "https://clientdotzip.web.app/main.html";}
+    console.log(location.href)
     
     // ...
   } else {
     username = null;
     document.getElementById("usernameShow").innerHTML = username;
-    document.getElementById("usernameShow").style.color = "#" + randomColor;
   }
 });
 
@@ -71,10 +71,10 @@ function setRoom(){
         if(rm.substring(0,4)=="user"){
             if(rm.substring(5).localeCompare(username)==1){
                 ref=db.ref(rm.substring(5)+username)
-                room = "main"
+                room = "djsalkfjaslkdfjdslkacfkldshnvklcdnv jkfdh;nvlk;jdfdsvjvhcxjvhafjhndfvjkcfhdxxjkvbhdajkbvcxjkzvbhearcxjbhzjkcbhsajkheruifheuify458u856tyeruigoqettgfceuistgr4etgsiru"
             }else if(rm.substring(5).localeCompare(username)==-1){
                 ref=db.ref(username+rm.substring(5))
-                room = "main"
+                room = "djsalkfjaslkdfjdslkacfkldshnvklcdnv jkfdh;nvlk;jdfdsvjvhcxjvhafjhndfvjkcfhdxxjkvbhdajkbvcxjkzvbhearcxjbhzjkcbhsajkheruifheuify458u856tyeruigoqettgfceuistgr4etgsiru"
             }
         }
     }

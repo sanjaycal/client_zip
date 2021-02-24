@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": "Build",
+    "site": "fir-test-f2419",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -10,6 +11,21 @@
       {
         "source": "**",
         "destination": "/index.html"
+      }
+    ]
+  },
+  "hosting": {
+    "public": "Build",
+    "site": "clientdotzip",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/main.html"
       }
     ]
   }
