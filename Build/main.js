@@ -123,6 +123,11 @@ function submit(){
                 document.getElementById("inputText").value = "";
               })
           });
+
+
+
+
+
         
     }}
 }
@@ -143,15 +148,15 @@ function Cr(){
                 // Work with JSON data here
                 let newMessage = document.getElementById("message").content.cloneNode(true);
                 newMessage.children[0].src = data[Object.keys(data)[0]].pfp;
-                newMessage.children[1].innerHTML = data[Object.keys(data)[0]].username;
+                newMessage.children[1].innerHTML = data[Object.keys(data)[0]].username.sanitize();
                 newMessage.children[1].style.marginBottom = 0;
                 newMessage.children[2].style.marginTop = 0;
                 if(snapshot.val().isImage){
-                    newMessage.children[4].src = snapshot.val().text;
+                    newMessage.children[4].src = snapshot.val().text.sanitize();
                 }else if (imageTypes.includes((snapshot.val().text).slice(-3))){
-                    newMessage.children[4].src = snapshot.val().text;
+                    newMessage.children[4].src = snapshot.val().text.sanitize();
                 }else{
-                    newMessage.children[3].innerHTML = snapshot.val().text;
+                    newMessage.children[3].innerHTML = snapshot.val().text.sanitize();
                 }
                 newMessage.children[2].style.fontFamily = snapshot.val().font;
                 senderdb.off("child_added");
@@ -189,4 +194,17 @@ function updateUsernamePfp(){
 
 function addImage(){
     document.getElementById("Fileinput").click();
+}
+
+String.prototype.sanitize = function(){
+    let tagsToReplace = {
+        "&":"&amp",
+        "<":"&lt",
+        ">":"&gt"
+    };
+    return this.replace(/[&<>]/g, function(tag){
+        return tagsToReplace[tag] || tag;
+    });
+
+
 }
