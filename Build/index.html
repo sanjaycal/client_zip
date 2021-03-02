@@ -9,21 +9,14 @@
    <meta name="Description" content="The main chat.">
  </head>
  <body>
-   <template id = "message">
-     <img id="Profilepc" height = 40px src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/>
-     <label id="h1" style="color: #ff0000; margin-bottom: 0; margin-top: 0; font-size: 40px;"></label><br id="mbr">
-     <label id="h5" style="color: #000000; margin-bottom: 0; font-family: Arial; font-size: 20px;"></label>
-     <img id="img" max-height=200px src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="/><br id="mbr">
-   </template>
    <div class="toprighttext"><label class="usernameShow" id=usernameShow></label> 
    <img id=pfpShow height=40px width=40px></div> 
-   <label for="username">&nbsp   username:   &nbsp<input type="text" placeholder="Username" id="username"></label>
-   <label for="email">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspemail:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" placeholder="Email" id="email"></label><br id="br4">
-   <label for="password">password: &nbsp&nbsp&nbsp<input type="password" placeholder="Password" id="password"></label>
-   <label for="profilePicture">profilePictureURL:<input type="text" placeholder="PFP URL" id="profilePicture"></label><br id="br5">
-   <button id="signUp" onmousedown="signUpWithEmailPassword();" >Sign Up</button>
-   <button id="signIn" onmousedown="signInWithEmailPassword();" >Sign In</button>
-   <button id="updateUPFP" onmousedown="updateUsernamePfp();" >Update</button><br id="br1">
+   <label for="username"><input class="usernameTextBox" type="text" placeholder="Username" id="username"></label>
+   <label for="email"><input class="emailTextBox" type="text" placeholder="Email" id="email"></label><br id="br4">
+   <label for="password"><input class="passwordTextBox" type="password" placeholder="Password" id="password"></label>
+   <label for="profilePicture"><input class="pfpTextBox" type="text" placeholder="PFP URL" id="profilePicture"></label><br id="br5">
+   <button id="signUp" onmousedown="signUpWithEmailPassword();" class="signUp">Sign Up</button>
+   <button id="signIn" onmousedown="signInWithEmailPassword();" class="signIn">Sign In</button><br id="br1">
 
    <!-- The core Firebase JS SDK is always required and must be listed first -->
    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>

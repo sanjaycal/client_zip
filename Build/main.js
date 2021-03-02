@@ -13,7 +13,7 @@ firebase.initializeApp(firebaseConfig);
 let uid = null;
 let db = firebase.database();
 let username = null;
-let ref = db.ref("test");
+let ref = db.ref("main");
 let contrast_ratio = 1.05/1.5 - 0.05;
 let imageTypes = ["jpg","png","gif","svg"]
 let pfp = "";
@@ -66,7 +66,8 @@ function setRoom(){
     rm = document.getElementById("roomCode").value
     if (!(rm.includes("<"))){
         room = document.getElementById("roomCode").value;
-        ref = db.ref("test")
+        ref = db.ref("main").orderByChild("time")
+        console.log()
         if(rm.substring(0,4)=="user"){
             if(rm.substring(5).localeCompare(username)==1){
                 ref=db.ref(rm.substring(5)+username)
@@ -108,8 +109,8 @@ function submit(){
     var n = d.getTime();
     if (document.getElementById("Fileinput").files[0]!= undefined){
     file = document.getElementById("Fileinput").files[0]}
-    if (username != null && document.getElementById("inputText").value.length > 2 && !(document.getElementById("inputText").value.includes("<"))) {
-        ref.push({text:text, font:font, room:room, uid:uid, isImage:false,time:n});
+    if (username != null && document.getElementById("inputText").value.length < 2000 && !(document.getElementById("inputText").value.includes("<"))) {
+        dbref("main/"+n).set({text:text, font:font, room:room, uid:uid, isImage:false});
         document.getElementById("inputText").value = "";
     }if(document.getElementById("Fileinput").files[0]!= undefined){if(file.name!="" && imageTypes.includes((file.name).slice(-3))){
         urli = "";
@@ -119,7 +120,7 @@ function submit(){
         newFile = storageRef.child(urli)
         newFile.put(file).then((snapshot) => {
             newFile.getDownloadURL().then((url) => {
-                ref.push({text:url, font:font, room:room, uid:uid, isImage:true,time:n});
+                db.ref("main/"+n).set({text:url, font:font, room:room, uid:uid, isImage:true});
                 document.getElementById("inputText").value = "";
               })
           });
@@ -135,7 +136,7 @@ function submit(){
 
 function Cr(){
     ref.off("child_added");
-    ref.orderByChild("time").on("child_added",function(snapshot){
+    ref.on("child_added",function(snapshot){
         if (snapshot.val().room == room){
             
             let senderdb = db.ref(snapshot.val().uid);
@@ -152,9 +153,9 @@ function Cr(){
                 newMessage.children[1].style.marginBottom = 0;
                 newMessage.children[2].style.marginTop = 0;
                 if(snapshot.val().isImage){
-                    newMessage.children[4].src = snapshot.val().text.sanitize();
+                    newMessage.children[4].src = snapshot.val().text;
                 }else if (imageTypes.includes((snapshot.val().text).slice(-3))){
-                    newMessage.children[4].src = snapshot.val().text.sanitize();
+                    newMessage.children[4].src = snapshot.val().text;
                 }else{
                     newMessage.children[3].innerHTML = snapshot.val().text.sanitize();
                 }
@@ -162,6 +163,9 @@ function Cr(){
                 senderdb.off("child_added");
                 document.body.insertBefore(newMessage,document.body.children[11]);
             });
+            if (uid!=snapshot.val().uid){
+            var audio = new Audio('message.mp3');
+            audio.play();}
         }
     });
 
