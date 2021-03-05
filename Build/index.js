@@ -9,9 +9,6 @@ const firebaseConfig = {
     databaseURL: "https://fir-test-f2419-default-rtdb.firebaseio.com"
 };
 
-
-let hashcode = ""
-let nhashcode = ""
 firebase.initializeApp(firebaseConfig);
 let uid = null;
 let db = firebase.database();
@@ -70,7 +67,7 @@ function setRoom(){
     rm = document.getElementById("roomCode").value
     if (!(rm.includes("<"))){
         room = document.getElementById("roomCode").value;
-        ref = db.ref("main")
+        ref = db.ref("main").orderByKey()
         if(rm.substring(0,4)=="user"){
             if(rm.substring(5).localeCompare(username)==1){
                 ref=db.ref(rm.substring(5)+username)
@@ -81,8 +78,28 @@ function setRoom(){
             }
         }
     }
+    var elms = document.querySelectorAll("[id='h1']");
+    for(var i = 0; i < elms.length; i++) {
+        elms[i].remove();}
+
+    var elms = document.querySelectorAll("[id='h5']");
+    for(var i = 0; i < elms.length; i++) {
+        elms[i].remove();}
+
+    var elms = document.querySelectorAll("[id='img']");
+    for(var i = 0; i < elms.length; i++) {
+        elms[i].remove();}
+
+    var elms = document.querySelectorAll("[id='Profilepc']");
+    for(var i = 0; i < elms.length; i++) {
+        elms[i].remove();}
+
+    var elms = document.querySelectorAll("[id='mbr']");
+    for(var i = 0; i < elms.length; i++) {
+        elms[i].remove();}
+
     //Cr()
-    forceUpdate()
+    update()
 
 }
 
@@ -91,12 +108,26 @@ function submit(){
     text = document.getElementById("inputText").value;
     var d = new Date();
     var n = d.getTime();
-    ref.push({text:text, font:font, room:room, uid:uid, isImage:false});
-    document.getElementById("inputText").value = "";
-    hashref = db.ref("hash")
-    hashref.push(Math.floor(Math.random()*200000000).toString(16))
-    update();
-
+    ref = db.ref(ref.toString().substring(51))
+    if (document.getElementById("Fileinput").files[0]!= undefined){
+    file = document.getElementById("Fileinput").files[0]}
+    if (username != null && document.getElementById("inputText").value.length < 2000 && document.getElementById("inputText")>=1 && !(document.getElementById("inputText").value.includes("<"))) {
+        ref.push({text:text, font:font, room:room, uid:uid, isImage:false,time:n});
+        document.getElementById("inputText").value = "";
+    }if(document.getElementById("Fileinput").files[0]!= undefined){if(file.name!="" && imageTypes.includes((file.name).slice(-3))){
+        urli = "";
+        for (i = 0; i < 128; i++) {
+            urli+= Math.floor(Math.random()*64).toString(32);
+        }
+        newFile = storageRef.child(urli)
+        newFile.put(file).then((snapshot) => {
+            newFile.getDownloadURL().then((url) => {
+                ref.push({text:url, font:font, room:room, uid:uid, isImage:true,time:n});
+                document.getElementById("inputText").value = "";
+              })
+          });
+    }}
+    ref = db.ref(ref.toString.substring(51)).orderByKey()
     
 }
 
@@ -140,37 +171,7 @@ String.prototype.sanitize = function(){
 
 }
 
-
-
-
-
 function update(){
-    hashref = db.ref("hash")
-    nhashcode = JSON.parse(Get(hashref.toJSON()+".json"))
-    nhashcode = nhashcode[(Object.keys(nhashcode))[Object.keys(nhashcode).length - 1]]
-    console.log(nhashcode)
-    if(hashcode!=nhashcode){
-    
-    var elms = document.querySelectorAll("[id='h1']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
-    var elms = document.querySelectorAll("[id='h5']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
-    var elms = document.querySelectorAll("[id='img']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
-    var elms = document.querySelectorAll("[id='Profilepc']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
-    var elms = document.querySelectorAll("[id='mbr']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
     Messages = ref.toJSON()
     fetch(Messages+".json")
     .then((response) => {
@@ -219,9 +220,7 @@ function update(){
             }
 
         }
-    });
-    hashcode = nhashcode;
-}
+    })
 
 }
 
@@ -233,88 +232,3 @@ function Get(yourUrl){
     return Httpreq.responseText;    
 }
 
-
-
-async function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-
-
-var t=setInterval(update,1000);
-
-
-
-function forceUpdate(){
-    
-    var elms = document.querySelectorAll("[id='h1']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
-    var elms = document.querySelectorAll("[id='h5']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
-    var elms = document.querySelectorAll("[id='img']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
-    var elms = document.querySelectorAll("[id='Profilepc']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
-    var elms = document.querySelectorAll("[id='mbr']");
-    for(var i = 0; i < elms.length; i++) {
-        elms[i].remove();}
-
-    Messages = ref.toJSON()
-    fetch(Messages+".json")
-    .then((response) => {
-        return response.json()
-    })
-    .then((AllMessages) => {
-        orderedMessages = Object.keys(AllMessages).sort().reduce(
-            (obj, key) => { 
-              obj[key] = AllMessages[key]; 
-              return obj;
-            }, 
-            {}
-          );
-        for (message in orderedMessages){
-            if (orderedMessages[message].room == room){
-
-
-                let newMessage = document.getElementById("message").content.cloneNode(true);
-                let senderdb = db.ref(orderedMessages[message].uid);
-                data = senderdb.toJSON();
-                if (users[data]== undefined){
-                a = JSON.parse(Get(data+".json"))
-                users[data] = a
-                data = a
-            }else{
-                    data=users[data]
-                }
-                newMessage.children[0].src = data[Object.keys(data)[0]].pfp
-                newMessage.children[1].innerHTML = data[Object.keys(data)[0]].username.sanitize();
-                newMessage.children[1].style.marginBottom = 0;
-                newMessage.children[2].style.marginTop = 0;
-                    if(orderedMessages[message].isImage){
-                        newMessage.children[4].src = orderedMessages[message].text;
-                    }else if (imageTypes.includes((orderedMessages[message].text).slice(-3))){
-                        newMessage.children[4].src = orderedMessages[message].text;
-                    }else{
-                        newMessage.children[3].innerHTML = orderedMessages[message].text.sanitize();
-                    }
-                    document.body.insertBefore(newMessage,document.body.children[11]);
-                
-                if (uid!=orderedMessages[message].uid){
-                var audio = new Audio('message.mp3');
-                audio.play();}
-            
-
-            }
-
-        }
-    });
-
-}
