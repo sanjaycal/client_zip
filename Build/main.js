@@ -1,3 +1,6 @@
+
+//import Peer from "https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"
+
 const firebaseConfig = {
     apiKey: "AIzaSyBVqEwxWAnjJkyT9R2YOdFZTyROBfcvhGY",
     authDomain: "fir-test-f2419.firebaseapp.com",
@@ -8,6 +11,34 @@ const firebaseConfig = {
     measurementId: "G-0XGXS3Z2GS",
     databaseURL: "https://fir-test-f2419-default-rtdb.firebaseio.com"
 };
+
+const audio = document.querySelector('audio');
+
+selfPeer = new Peer()
+
+var conn = selfPeer.connect("admin-client-zip")
+
+
+conn.on('open', function() {
+    // Receive messages
+    conn.on('data', function(data) {
+      console.log('Received', data);
+    });
+  
+    // Send messages
+    conn.send('Hello!');
+  });
+
+//var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+//getUserMedia({video: false, audio: true}, function(stream) {
+//  var call = selfPeer.call('admin-client-zip', stream);
+//  call.on('stream', function(remoteStream) {
+//    // Show stream in some video/canvas element.
+//  });
+//}, function(err) {
+//  console.log('Failed to get local stream' ,err);
+//});
+
 
 
 let hashcode = ""
@@ -70,7 +101,9 @@ function setRoom(){
     rm = document.getElementById("roomCode").value
     if (!(rm.includes("<"))){
         room = document.getElementById("roomCode").value;
-        ref = db.ref("main")
+        hashref = db.ref("hash/"+room)
+        hashref.push(Math.floor(Math.random()*200000000000).toString(16))
+        ref = db.ref("main/"+room)
         if(rm.substring(0,4)=="user"){
             if(rm.substring(5).localeCompare(username)==1){
                 ref=db.ref(rm.substring(5)+username)
@@ -81,8 +114,7 @@ function setRoom(){
             }
         }
     }
-    //Cr()
-    forceUpdate()
+    forceUpdate();
 
 }
 
@@ -91,10 +123,23 @@ function submit(){
     text = document.getElementById("inputText").value;
     var d = new Date();
     var n = d.getTime();
-    ref.push({text:text, font:font, room:room, uid:uid, isImage:false});
+    file = document.getElementById("Fileinput").files[0]
+    console.log(file)
+    storageRef = firebase.storage().ref().child(Math.floor(Math.random()*200000000000000000).toString(16))
+    if(file!=undefined){
+        storageRef.put(file).then((snapshot) => {
+            storageRef.getDownloadURL().then((url) => {
+            console.log(url)
+            ref.push({text:url, room:room, uid:uid, isImage:true});
+        })})
+    }else{
+        if (text.length<2000){
+        ref.push({text:text, room:room, uid:uid, isImage:false});}
+    }
+    
     document.getElementById("inputText").value = "";
-    hashref = db.ref("hash")
-    hashref.push(Math.floor(Math.random()*200000000).toString(16))
+    hashref = db.ref("hash/"+room)
+    hashref.push(Math.floor(Math.random()*200000000000).toString(16))
     update();
 
     
@@ -145,7 +190,10 @@ String.prototype.sanitize = function(){
 
 
 function update(){
-    hashref = db.ref("hash")
+    if (document.getElementById("Fileinput").files[0]!=undefined){
+        document.getElementById("inputText").value = document.getElementById("Fileinput").files[0].name 
+    }
+    hashref = db.ref("hash/"+room)
     nhashcode = JSON.parse(Get(hashref.toJSON()+".json"))
     nhashcode = nhashcode[(Object.keys(nhashcode))[Object.keys(nhashcode).length - 1]]
     console.log(nhashcode)
@@ -177,6 +225,10 @@ function update(){
         return response.json()
     })
     .then((AllMessages) => {
+        if (AllMessages == undefined || AllMessages == null){
+            sleep(200).then((data) =>{ref.push({text:"start", room:room, uid:uid, isImage:false});})
+
+        }
         orderedMessages = Object.keys(AllMessages).sort().reduce(
             (obj, key) => { 
               obj[key] = AllMessages[key]; 
@@ -203,6 +255,7 @@ function update(){
                 newMessage.children[1].style.marginBottom = 0;
                 newMessage.children[2].style.marginTop = 0;
                     if(orderedMessages[message].isImage){
+                        console.log(orderedMessages[message].text)
                         newMessage.children[4].src = orderedMessages[message].text;
                     }else if (imageTypes.includes((orderedMessages[message].text).slice(-3))){
                         newMessage.children[4].src = orderedMessages[message].text;
@@ -211,9 +264,7 @@ function update(){
                     }
                     document.body.insertBefore(newMessage,document.body.children[11]);
                 
-                if (uid!=orderedMessages[message].uid){
-                var audio = new Audio('message.mp3');
-                audio.play();}
+                
             
 
             }
@@ -273,6 +324,10 @@ function forceUpdate(){
         return response.json()
     })
     .then((AllMessages) => {
+        if (AllMessages == undefined || AllMessages == null){
+            ref.push({text:"start", room:room, uid:uid, isImage:false});
+
+        }
         orderedMessages = Object.keys(AllMessages).sort().reduce(
             (obj, key) => { 
               obj[key] = AllMessages[key]; 
